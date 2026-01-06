@@ -1,4 +1,4 @@
-import Work from "../models/work.model.js";
+import Work from "../models/Work.model.js";
 import cloudinary from "../config/cloudinary.js";
 import fs from "fs";
 
@@ -195,3 +195,4 @@ export const deleteWork = async (req, res) => {
         });
     }
 };
+
