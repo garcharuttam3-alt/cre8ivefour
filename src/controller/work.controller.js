@@ -59,7 +59,15 @@ export const createWork = async (req, res) => {
 ================================ */
 export const getAllWorks = async (req, res) => {
     try {
-        const works = await Work.find({})
+        const { category } = req.query;
+
+        const filter = { status: "published" };
+        if (category && category !== "All") {
+            filter.category = category;
+        }
+
+        const works = await Work.find(filter)
+            .select("title slug category coverImage shortDescription isFeatured")
             .sort({ createdAt: -1 });
 
         res.status(200).json({
@@ -74,7 +82,6 @@ export const getAllWorks = async (req, res) => {
         });
     }
 };
-
 
 /* ===============================
    GET SINGLE WORK (DETAIL PAGE)
