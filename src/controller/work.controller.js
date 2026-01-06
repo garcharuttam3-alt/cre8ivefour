@@ -57,31 +57,28 @@ export const createWork = async (req, res) => {
 /* ===============================
    GET ALL WORKS (LIST PAGE)
 ================================ */
-export const getAllWorks = async (req, res) => {
-    try {
-        const { category } = req.query;
+export const getWorks = async (req, res) => {
+  try {
+    // If authenticated (admin), show ALL works
+    // If not authenticated, show ONLY published
+    const filter = req.user ? {} : { status: "published" };
 
-        const filter = { status: "published" };
-        if (category && category !== "All") {
-            filter.category = category;
-        }
+    const works = await Work.find(filter)
+      .sort({ createdAt: -1 });
 
-        const works = await Work.find(filter)
-            .select("title slug category coverImage shortDescription isFeatured")
-            .sort({ createdAt: -1 });
-
-        res.status(200).json({
-            success: true,
-            count: works.length,
-            data: works,
-        });
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: error.message,
-        });
-    }
+    res.status(200).json({
+      success: true,
+      count: works.length,
+      data: works,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 };
+
 
 /* ===============================
    GET SINGLE WORK (DETAIL PAGE)
@@ -195,4 +192,5 @@ export const deleteWork = async (req, res) => {
         });
     }
 };
+
 
