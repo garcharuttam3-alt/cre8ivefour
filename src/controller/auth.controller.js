@@ -28,12 +28,12 @@ export const signUp = async (req, res) => {
 
         const token = generateToken(newUser._id);
 
-        res.cookie("token", token, {
-            httpOnly: true,
-            sameSite: "strict",
-            secure: process.env.NODE_ENV === "production",
-            maxAge: 7 * 24 * 60 * 60 * 1000,
-        });
+      res.cookie("token", token, {
+    httpOnly: true,
+    sameSite: "none",   // Required for cross-origin
+    secure: true,        // Required when sameSite is "none"
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+});
 
         return res.status(201).json({
             message: "User created successfully",
@@ -64,12 +64,12 @@ export const signIn = async (req, res) => {
 
         const token = generateToken(existingUser._id);
 
-        res.cookie("token", token, {
-            httpOnly: true,
-            sameSite: "strict",
-            secure: process.env.NODE_ENV === "production",
-            maxAge: 7 * 24 * 60 * 60 * 1000,
-        });
+       res.cookie("token", token, {
+    httpOnly: true,
+    sameSite: "none",   // Required for cross-origin
+    secure: true,        // Required when sameSite is "none"
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+});
 
         return res.status(200).json({
             message: "Signed in successfully",
@@ -85,11 +85,13 @@ export const signIn = async (req, res) => {
 // ========================== SIGN OUT ==========================
 export const signOut = (req, res) => {
     try {
-        res.clearCookie("token", {
-            httpOnly: true,
-            sameSite: "strict",
-            secure: process.env.NODE_ENV === "production",
-        });
+     res.cookie("token", token, {
+    httpOnly: true,
+    sameSite: "none",   // Required for cross-origin
+    secure: true,        // Required when sameSite is "none"
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+});
+
 
         return res.status(200).json({ message: "Signed out successfully" });
 
@@ -111,3 +113,4 @@ export const checkAuth = (req, res) => {
         return res.status(500).json({ message: "Server error" });
     }
 };
+
