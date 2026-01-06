@@ -22,12 +22,10 @@ app.use(express.urlencoded({ extended: true }));
 
 
 app.use(cors({
-   origin: [
-      'https://preview--cre8ive-admin-hub.lovable.app',
-      // Add your production domain later
-   ],
+   origin: true,  // Allow all origins (or use specific URLs)
    credentials: true
 }));
+
 
 
 app.use(cookieParser());
@@ -57,4 +55,5 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () =>
    console.log(`Server running on port ${PORT}`)
 );
+
 
