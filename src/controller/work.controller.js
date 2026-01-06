@@ -57,26 +57,22 @@ export const createWork = async (req, res) => {
 /* ===============================
    GET ALL WORKS (LIST PAGE)
 ================================ */
-export const getWorks = async (req, res) => {
-  try {
-    // If authenticated (admin), show ALL works
-    // If not authenticated, show ONLY published
-    const filter = req.user ? {} : { status: "published" };
+export const getAllWorks = async (req, res) => {
+    try {
+        const works = await Work.find({})
+            .sort({ createdAt: -1 });
 
-    const works = await Work.find(filter)
-      .sort({ createdAt: -1 });
-
-    res.status(200).json({
-      success: true,
-      count: works.length,
-      data: works,
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
+        res.status(200).json({
+            success: true,
+            count: works.length,
+            data: works,
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message,
+        });
+    }
 };
 
 
@@ -192,5 +188,6 @@ export const deleteWork = async (req, res) => {
         });
     }
 };
+
 
 
